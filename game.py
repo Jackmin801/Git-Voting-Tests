@@ -66,45 +66,45 @@ def check_violations():
 		sys.exit(1)
 
 
-def resolve_project(project_name: str, votes: List[Tuple[str, int]]) -> Optional[str]:
-	"""Resolve one project
-	
-	Args:
-		project_name (str): The name of the project
-		votes (List[Tuple[str, int]]): 
-			A list of votes for the project. The first index is the name of the voter. 
-			The second is the amount of votes they put in.
-	"""
-	# Preamble
-	print(f"Project: {project_name}")
-	print(f"Votes: {votes}")
+def resolve_project(project_name: str, unsorted_votes: List[Tuple[str, int]]) -> Optional[str]:
+    """Resolve one project.
+    Args:
+        project_name (str): The name of the project
+        votes (List[Tuple[str, int]]):
+            A list of votes for the project. The first index is the name of the voter.
+            The second is the amount of votes they put in.
+    """
+    # Preamble
+    votes = sorted(unsorted_votes, key=lambda x: (x[1], x[0]), reverse=True)
+    print(f"Project: {project_name}")
+    print(f"Votes: {votes}")
 
-	# If no votes, skip
-	if sum(i[1] for i in votes) <= 0:
-		print("No one voted for this project :( Skipping...")
-		print()
-		return None
+    # If no votes, skip
+    if sum(i[1] for i in votes) <= 0:
+        print("No one voted for this project :( Skipping...")
+        print()
+        return None
 
-	# Create intervals
-	intervals = [0]
-	for player, player_votes in votes:
-		if CONFIGS['counting_type'] == 'linear':
-			intervals.append(intervals[-1] + player_votes)
-		if CONFIGS['counting_type'] == 'quadratic':
-			intervals.append(intervals[-1] + player_votes ** 2)
-	print(f"Intervals: {intervals}")
+    # Create intervals
+    intervals = [0]
+    for player, player_votes in votes:
+        if CONFIGS['counting_type'] == 'linear':
+            intervals.append(intervals[-1] + player_votes)
+        if CONFIGS['counting_type'] == 'quadratic':
+            intervals.append(intervals[-1] + player_votes ** 2)
+    print(f"Intervals: {intervals}")
 
-	# Select winner
-	winning_number = random.randint(1, intervals[-1])
-	winning_index = bisect_left(intervals, winning_number) - 1
-	winner = votes[winning_index][0]
+    # Select winner
+    winning_number = random.randint(1, intervals[-1])
+    winning_index = bisect_left(intervals, winning_number) - 1
+    winner = votes[winning_index][0]
 
-	# Success messages
-	print(f"Winning Number: {winning_number}")
-	print(f"Winner: {winner} [{winning_index}]")
-	print()
+    # Success messages
+    print(f"Winning Number: {winning_number}")
+    print(f"Winner: {winner} [{winning_index}]")
+    print()
 
-	return winner
+    return winner
 
 
 def play():
@@ -115,7 +115,7 @@ def play():
 	winners = {}
 	projects = sorted(
 		CONFIGS['contended_projects'], 
-		key=lambda project: sum(v[project] for v in PLAYERS.values()),
+		key=lambda project: (sum(v[project] for v in PLAYERS.values()), project),
 		reverse=True
 	)
 
