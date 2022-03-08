@@ -1,0 +1,22 @@
+Configs:
+  salt: 1
+  votes_per_person: 10
+  counting_type: quadratic
+  contended_projects:
+  - A
+  - B 
+  - C 
+
+Players:
+  Jack:
+    A: 4
+    B: 2
+    C: 4
+  James:
+    A: 3
+    B: 3
+    C: 4
+  Jason:
+    A: 0
+    B: 0
+    C: 10
