@@ -5,10 +5,12 @@ import random
 import yaml
 import sys
 
-with open("votes.yaml", "r") as f:
+FILENAME = sys.argv[1] if len(sys.argv) > 1 else "votes.yaml"
+
+with open(FILENAME, "r") as f:
 	raw = yaml.safe_load(f)
 
-with open("votes.yaml", "rb") as f:
+with open(FILENAME, "rb") as f:
 	SEED = sha256(f.read()).hexdigest()
 
 CONFIGS = raw['Configs']
