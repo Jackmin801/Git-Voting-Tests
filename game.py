@@ -108,31 +108,32 @@ def resolve_project(project_name: str, unsorted_votes: List[Tuple[str, int]]) ->
 
 
 def play():
-	"""Play the game
+    """Play the game
 
-	Attempts to resolve all the projects in descending order of total votes.
-	"""
-	winners = {}
-	projects = sorted(
-		CONFIGS['contended_projects'], 
-		key=lambda project: (sum(v[project] for v in PLAYERS.values()), project),
-		reverse=True
-	)
+    Attempts to resolve all the projects in descending order of total votes.
+    """
+    winners = {}
+    projects = sorted(
+        CONFIGS['contended_projects'], 
+        key=lambda project: (sum(v[project] for v in PLAYERS.values()), project),
+        reverse=True
+    )
 
-	for project in projects:
-		project_votes = list((k, v[project]) for k,v in PLAYERS.items() if k not in winners.keys())
-		winner = resolve_project(project, project_votes)
-		if winner:
-			winners[winner] = project
+    for project in projects:
+        project_votes = list((k, v[project]) for k,v in PLAYERS.items() if k not in winners.keys())
+        winner = resolve_project(project, project_votes)
+        if winner:
+            winners[winner] = project
 
-	print("Winners")
-	print("=======")
-	print(winners)
-	print()
-	print("Unallocated")
-	print("===========")
-	print("Players:", set(PLAYERS.keys()) - set(winners.keys()))
-	print("Projects:", set(CONFIGS['contended_projects']) - set(winners.values()))
+    print("Winners")
+    print("=======")
+    print(winners)
+    print()
+    if set(PLAYERS.keys()) - set(winners.keys()):
+        print("Unallocated")
+        print("===========")
+        print("Players:", set(PLAYERS.keys()) - set(winners.keys()))
+        print("Projects:", set(CONFIGS['contended_projects']) - set(winners.values()))
 
 
 if __name__ == '__main__':
