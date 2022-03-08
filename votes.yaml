@@ -1,7 +1,7 @@
 Configs:
   salt: 3
   votes_per_person: 10
-  counting_type: quadratic
+  counting_type: linear
   contended_projects:
   - A
   - B 
