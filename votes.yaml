@@ -9,9 +9,9 @@ Configs:
 
 Players:
   Jack:
-    A: 2
-    B: 4
-    C: 4
+    A: 8
+    B: 1
+    C: 1
   James:
     A: 10
     B: 0

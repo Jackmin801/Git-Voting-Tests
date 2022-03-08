@@ -81,7 +81,7 @@ def resolve_project(project_name: str, unsorted_votes: List[Tuple[str, int]]) ->
 
     # If no votes, skip
     if sum(i[1] for i in votes) <= 0:
-        print("No one voted for this project :( Skipping...")
+        print("No one voted for this project :(\nSkipping...")
         print()
         return None
 
